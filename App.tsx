@@ -21,7 +21,9 @@ function App(): React.JSX.Element {
   const fileName = 'testFile';
 
   const filePath =
-    'file:///storage/emulated/0/Download' + '/' + fileName + '.pdf';
+    Platform.OS === 'android'
+      ? 'file:///storage/emulated/0/Download' + '/' + fileName + '.pdf'
+      : '' + '/' + fileName + '.pdf';
 
   const pdfURLLink =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -95,7 +97,10 @@ function App(): React.JSX.Element {
   };
 
   const shareonWhatsapp = async () => {
-    const whatsappUrl = 'market://details?id=com.whatsapp';
+    const whatsappUrl =
+      Platform.OS === 'android'
+        ? 'market://details?id=com.whatsapp'
+        : 'itms-apps://apps.apple.com/gb/app/whatsapp-messenger/id310633997';
 
     const shareOptions = {
       title: 'Share via',
