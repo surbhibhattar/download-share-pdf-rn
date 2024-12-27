@@ -69,10 +69,8 @@ function App(): React.JSX.Element {
     try {
       const ShareResponse = await Share.open(shareOptions);
       console.log('Result =>', ShareResponse);
-      // setResult(JSON.stringify(ShareResponse, null, 2));
     } catch (error) {
       console.log('sharePdfBase64 Error =>', error);
-      // setResult('error: '.concat(getErrorString(error)));
     }
   };
 
@@ -92,99 +90,79 @@ function App(): React.JSX.Element {
   };
 
   const customShare = async () => {
-    // await downloadPdf();
+    await downloadPdf();
     setModalVisible(true);
   };
 
   const shareonWhatsapp = async () => {
     const whatsappUrl = 'market://details?id=com.whatsapp';
-    //   try {
-    //      await Linking.openURL(whatsappUrl);
-    // } catch (error) {
-    //     console.error('Error sharing to Whatsapp:', error);
-    // }
 
     const shareOptions = {
       title: 'Share via',
-      // message: 'some message',
       url: filePath,
       social: Share.Social.WHATSAPP,
-      // whatsAppNumber: "9199999999",  // country code + phone number
-      // filename: 'test' , // only for base64 file in Android
     };
 
-    try{
-      const { isInstalled } = await Share.isPackageInstalled(
-        "com.whatsapp.android"
-      );
-      if(isInstalled){
+    try {
+      const {isInstalled} = await Share.isPackageInstalled('com.whatsapp');
+      if (isInstalled) {
+        console.log('isInstalled, ', isInstalled);
         await Share.shareSingle(shareOptions);
-      }else{
+      } else {
         await Linking.openURL(whatsappUrl);
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-
-
-    
-
-    // Share.shareSingle(shareOptions)
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     err && console.log(err);
-    //   });
   };
-  const shareonWhatsappBusiness = () => {
+  const shareonWhatsappBusiness = async () => {
+    const whatsappBusinessUrl = 'market://details?id=com.whatsapp.w4b';
 
     const shareOptions = {
-      // title: 'Share via',
-      // message: 'some message',
       url: filePath,
       social: Share.Social.WHATSAPPBUSINESS,
-      type:'application/pdf'
-      // whatsAppNumber: "9199999999",  // country code + phone number
-      // filename: 'test' , // only for base64 file in Android
     };
 
-    Share.shareSingle(shareOptions)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        err && console.log(err);
-      });
-
+    try {
+      const {isInstalled} = await Share.isPackageInstalled('com.whatsapp.w4b');
+      if (isInstalled) {
+        console.log('isInstalled, ', isInstalled);
+        await Share.shareSingle(shareOptions);
+      } else {
+        await Linking.openURL(whatsappBusinessUrl);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const shareonEmail = () => {
+  const shareonEmail = async () => {
+    const gmailUrl = 'market://details?id=com.google.android.gm';
+
     const shareOptions = {
       title: 'Share via',
-      // message: 'some message',
       url: filePath,
       social: Share.Social.EMAIL,
-      // whatsAppNumber: "9199999999",  // country code + phone number
-      // filename: 'test' , // only for base64 file in Android
     };
 
-    Share.shareSingle(shareOptions)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        err && console.log(err);
-      });
-
+    try {
+      const {isInstalled} = await Share.isPackageInstalled(
+        'com.google.android.gm',
+      );
+      if (isInstalled) {
+        console.log('isInstalled, ', isInstalled);
+        await Share.shareSingle(shareOptions);
+      } else {
+        await Linking.openURL(gmailUrl);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const shareonSMS = () => {
     const shareOptions = {
       title: 'Share via',
-      // message: 'some message',
       url: filePath,
       social: Share.Social.SMS,
-      // whatsAppNumber: "9199999999",  // country code + phone number
-      // filename: 'test' , // only for base64 file in Android
     };
 
     Share.shareSingle(shareOptions)
@@ -194,7 +172,6 @@ function App(): React.JSX.Element {
       .catch(err => {
         err && console.log(err);
       });
-
   };
 
   return (
